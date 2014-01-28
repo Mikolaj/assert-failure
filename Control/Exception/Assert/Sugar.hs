@@ -25,7 +25,7 @@ infix 1 `blame`
 -- | If the condition fails, display the value blamed for the failure.
 -- Used as in
 --
--- > assert (age >= 0 `blame` age) $ savings / (99 - age)
+-- > assert (age < 120 `blame` age) $ savings / (120 - age)
 blame :: Show a => Bool -> a -> Bool
 {-# INLINE blame #-}
 blame True _ = True
@@ -55,7 +55,7 @@ infix 2 `twith`
 -- | Syntactic sugar for the pair operation, to be used in 'blame'
 -- and 'failure' as in
 --
--- > assert (age >= 0 `blame` "negative age" `twith` age) $ savings / (99 - age)
+-- > assert (age < 120 `blame` "age too high" `twith` age) $ savings / (120 - age)
 --
 -- or
 --
@@ -74,7 +74,7 @@ infix 2 `swith`
 -- Syntactic sugar for the pair operation, to be used in 'blame'
 -- and 'failure' as in
 --
--- > assert (age >= 0 `blame` "negative age" `swith` age) $ savings / (99 - age)
+-- > assert (age < 120 `blame` "age too high" `swith` age) $ savings / (120 - age)
 --
 -- or
 --
