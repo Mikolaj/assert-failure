@@ -1,4 +1,4 @@
-assert-failure [![Build Status](https://secure.travis-ci.org/Mikolaj/assert-failure.png)](http://travis-ci.org/Mikolaj/assert-failure)
+assert-failure [![Build Status](https://secure.travis-ci.org/Mikolaj/assert-failure.png)](http://travis-ci.org/Mikolaj/assert-failure)[![Build Status](https://drone.io/github.com/Mikolaj/assert-failure/status.png)](https://drone.io/github.com/Mikolaj/assert-failure/latest)
 ==============
 
 This library contains syntactic sugar that improves
