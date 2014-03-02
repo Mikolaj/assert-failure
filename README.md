@@ -7,6 +7,10 @@ This is actually a bunch of hacks wrapping the original 'assert' function,
 which is, as of GHC 7.8, the only simple way of obtaining source positions.
 The original 'assert' function is here re-exported for convenience.
 
+See also <http://hackage.haskell.org/package/loch>,
+<http://hackage.haskell.org/package/assert>
+and <https://ghc.haskell.org/trac/ghc/ticket/5273>.
+
 Make sure to enable assertions for your cabal package, e.g., by setting
 
     ghc-options: -fno-ignore-asserts

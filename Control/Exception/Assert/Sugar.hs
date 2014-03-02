@@ -49,7 +49,8 @@ failure asrt blamed =
           ++ Show.Pretty.ppShow blamed
   in trace s
      $ asrt False
-     $ error "Assert.failure: no error position (upgrade to GHC >= 7.4)"
+     $ error "Control.Exception.Assert.Sugar.failure"
+         -- Lack of no-ignore-asserts or GHC < 7.4.
 
 infix 2 `twith`
 -- | Syntactic sugar for the pair operation, to be used in 'blame'

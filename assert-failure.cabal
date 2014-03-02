@@ -11,6 +11,10 @@ description:   This library contains syntactic sugar that improves
                the usability of 'assert' and 'error'.
                This is actually a bunch of hacks wrapping the original
                'assert' function, see inside.
+               .
+               See also <http://hackage.haskell.org/package/loch>,
+               <http://hackage.haskell.org/package/assert>
+               and <https://ghc.haskell.org/trac/ghc/ticket/5273>.
 homepage:      https://github.com/Mikolaj/assert-failure
 bug-reports:   https://github.com/Mikolaj/assert-failure/issues
 license:       BSD3
