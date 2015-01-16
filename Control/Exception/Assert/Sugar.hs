@@ -13,7 +13,7 @@
 -- in your .cabal file. Otherwise, some of the functions will have
 -- no effect at all.
 module Control.Exception.Assert.Sugar
-  ( assert, blame, failure, twith, swith, allB, skip, forceEither
+  ( assert, blame, failure, twith, swith, allB, forceEither
   ) where
 
 import Control.Exception (assert)
@@ -101,15 +101,6 @@ allBMessage :: Show a => (a -> Bool) -> [a] -> String
 allBMessage predicate l = Show.Pretty.ppShow (filter (not . predicate) l)
                           ++ " in the context of "
                           ++ Show.Pretty.ppShow l
-
--- | To be used in place of the verbose @(return ())@, as in
---
--- > do k <- getK7 r
--- >    assert (k <= maxK `blame` "K7 too large" `twith` r) skip
--- >    return $ k >= averageK
-skip :: Monad m => m ()
-{-# INLINE skip #-}
-skip = return ()
 
 infix 1 `forceEither`
 -- | Assuming that @Left@ signifies an error condition,
