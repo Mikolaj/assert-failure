@@ -5,7 +5,7 @@ name:          assert-failure
 -- PVP summary: +-+------- breaking API changes
 --              | | +----- non-breaking API additions
 --              | | | +--- code changes with no API change
-version:        0.1.1.0
+version:        0.1.2.0
 synopsis:      Syntactic sugar improving 'assert' and 'error'
 description:   This library contains syntactic sugar that improves
                the usability of 'assert' and 'error'.
