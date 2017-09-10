@@ -64,15 +64,15 @@ infix 2 `twith`
 -- >   0 : _ -> assert `failure` "insignificant zero" `twith` xs
 --
 -- Fixing the first component of the pair to @Text@ prevents warnings
--- about defaulting.
+-- about defaulting, even when @OverloadedStrings@ extension is enabled.
+{-# DEPRECATED twith
+      "consider using 'swith' instead, because GHC optimizes constant Strings better than Texts" #-}
 twith :: Text -> b -> (Text, b)
 {-# INLINE twith #-}
 twith t b = (t, b)
 
 infix 2 `swith`
--- | The same as 'twith', but for 'String', not 'Text'.
---
--- Syntactic sugar for the pair operation, to be used in 'blame'
+-- | Syntactic sugar for the pair operation, to be used in 'blame'
 -- and 'failure' as in
 --
 -- > assert (age < 120 `blame` "age too high" `swith` age) $ savings / (120 - age)
@@ -83,7 +83,7 @@ infix 2 `swith`
 -- >   0 : _ -> assert `failure` "insignificant zero" `swith` xs
 --
 -- Fixing the first component of the pair to @String@ prevents warnings
--- about defaulting.
+-- about defaulting, even when @OverloadedStrings@ extension is enabled.
 swith :: String -> b -> (String, b)
 {-# INLINE swith #-}
 swith t b = (t, b)
