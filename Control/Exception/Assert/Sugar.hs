@@ -13,7 +13,8 @@
 -- in your .cabal file. Otherwise, some of the functions will have
 -- no effect at all.
 module Control.Exception.Assert.Sugar
-  ( assert, blame, failure, twith, swith, allB, forceEither
+  ( assert, blame, showFailure, swith, allB
+  , failure, twith, forceEither
   ) where
 
 import Control.Exception (assert)
@@ -37,11 +38,14 @@ blameMessage blamed = "Contract failed and the following is to blame:\n  "
                       ++ Show.Pretty.ppShow blamed
 
 infix 1 `failure`
--- | Like 'error', but shows the source position and also
--- the value to blame for the failure. To be used as in
+-- | Like 'error', but shows the source position (in newer GHCs
+-- @error@ shows source position as well, hence deprecation)
+-- and also the value to blame for the failure. To be used as in
 --
 -- > case xs of
 -- >   0 : _ -> assert `failure` (xs, "has an insignificant zero")
+{-# DEPRECATED failure
+      "use 'error' and 'showFailure' instead, now that 'error' prints source positions" #-}
 failure :: Show a => (forall x. Bool -> x -> x) -> a -> b
 {-# NOINLINE failure #-}
 failure asrt blamed =
@@ -51,6 +55,18 @@ failure asrt blamed =
      $ asrt False
      $ error "Control.Exception.Assert.Sugar.failure"
          -- Lack of no-ignore-asserts or GHC < 7.4.
+
+infix 2 `showFailure`
+-- | A helper function for 'error'. To be used as in
+--
+-- > case xs of
+-- >   0 : _ -> error $ "insignificant zero" `showFailure` xs
+showFailure :: Show v => String -> v -> String
+{-# NOINLINE showFailure #-}
+showFailure s v =
+  "Internal failure occurred and the following is to blame:\n  "
+  ++ s ++ "\n  "
+  ++ Show.Pretty.ppShow v
 
 infix 2 `twith`
 -- | Syntactic sugar for the pair operation, to be used in 'blame'
@@ -84,9 +100,9 @@ infix 2 `swith`
 --
 -- Fixing the first component of the pair to @String@ prevents warnings
 -- about defaulting, even when @OverloadedStrings@ extension is enabled.
-swith :: String -> b -> (String, b)
+swith :: String -> v -> (String, v)
 {-# INLINE swith #-}
-swith t b = (t, b)
+swith s v = (s, v)
 
 -- | Like 'List.all', but if the predicate fails, blame all the list elements
 -- and especially those for which it fails. To be used as in
@@ -105,10 +121,13 @@ allBMessage predicate l = Show.Pretty.ppShow (filter (not . predicate) l)
 infix 1 `forceEither`
 -- | Assuming that @Left@ signifies an error condition,
 -- check the @Either@ value and, if @Left@ is encountered,
--- fail outright and show the error message. Used as in
+-- fail outright and show the error message (in newer GHCs
+-- @error@ shows source position as well, hence deprecation). Used as in
 --
 -- > assert `forceEither` parseOrFailWithMessage code
 forceEither :: Show a => (forall x. Bool -> x -> x) -> Either a b -> b
+{-# DEPRECATED forceEither
+      "use 'either (error . show) id' instead, now that 'error' prints source positions" #-}
 {-# NOINLINE forceEither #-}
 forceEither asrt (Left a)  = asrt `failure` a
 forceEither _    (Right b) = b
