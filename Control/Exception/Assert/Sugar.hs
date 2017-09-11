@@ -1,10 +1,7 @@
 {-# LANGUAGE RankNTypes #-}
 -- | Syntactic sugar that improves the usability of 'Control.Exception.assert'
--- and 'error'.
---
--- This is actually a bunch of hacks wrapping the original @assert@ function,
--- which is, as of GHC 7.8, the only simple way of obtaining source positions.
--- The original @assert@ function is here re-exported for convenience.
+-- and 'error'. The original @assert@ function is here re-exported
+-- for convenience.
 --
 -- Make sure to enable assertions for your cabal package, e.g., by setting
 --
@@ -45,7 +42,7 @@ infix 1 `failure`
 -- > case xs of
 -- >   0 : _ -> assert `failure` (xs, "has an insignificant zero")
 {-# DEPRECATED failure
-      "use 'error' and 'showFailure' instead, now that 'error' prints source positions" #-}
+      "use 'error' and 'showFailure' instead, now that 'error' prints source positions." #-}
 failure :: Show a => (forall x. Bool -> x -> x) -> a -> b
 {-# NOINLINE failure #-}
 failure asrt blamed =
@@ -61,6 +58,10 @@ infix 2 `showFailure`
 --
 -- > case xs of
 -- >   0 : _ -> error $ "insignificant zero" `showFailure` xs
+--
+-- Fixing the first argument to @String@ instead of anything Showable
+-- prevents warnings about defaulting, even when @OverloadedStrings@
+-- extension is enabled.
 showFailure :: Show v => String -> v -> String
 {-# NOINLINE showFailure #-}
 showFailure s v =
@@ -69,34 +70,21 @@ showFailure s v =
   ++ Show.Pretty.ppShow v
 
 infix 2 `twith`
--- | Syntactic sugar for the pair operation, to be used in 'blame'
--- and 'failure' as in
+-- | Syntactic sugar for the pair operation, to be used for 'blame' as in
 --
 -- > assert (age < 120 `blame` "age too high" `twith` age) $ savings / (120 - age)
---
--- or
---
--- > case xs of
--- >   0 : _ -> assert `failure` "insignificant zero" `twith` xs
---
 -- Fixing the first component of the pair to @Text@ prevents warnings
 -- about defaulting, even when @OverloadedStrings@ extension is enabled.
 {-# DEPRECATED twith
-      "consider using 'swith' instead, because GHC optimizes constant Strings better than Texts" #-}
+      "consider using 'swith' instead, because GHC optimizes constant Strings better than Texts." #-}
 twith :: Text -> b -> (Text, b)
 {-# INLINE twith #-}
 twith t b = (t, b)
 
 infix 2 `swith`
--- | Syntactic sugar for the pair operation, to be used in 'blame'
--- and 'failure' as in
+-- | Syntactic sugar for the pair operation, to be used for 'blame' as in
 --
 -- > assert (age < 120 `blame` "age too high" `swith` age) $ savings / (120 - age)
---
--- or
---
--- > case xs of
--- >   0 : _ -> assert `failure` "insignificant zero" `swith` xs
 --
 -- Fixing the first component of the pair to @String@ prevents warnings
 -- about defaulting, even when @OverloadedStrings@ extension is enabled.
@@ -127,7 +115,7 @@ infix 1 `forceEither`
 -- > assert `forceEither` parseOrFailWithMessage code
 forceEither :: Show a => (forall x. Bool -> x -> x) -> Either a b -> b
 {-# DEPRECATED forceEither
-      "use 'either (error . show) id' instead, now that 'error' prints source positions" #-}
+      "use 'either (error . show) id' instead, now that 'error' prints source positions." #-}
 {-# NOINLINE forceEither #-}
 forceEither asrt (Left a)  = asrt `failure` a
 forceEither _    (Right b) = b
