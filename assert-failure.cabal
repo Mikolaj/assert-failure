@@ -39,4 +39,4 @@ library
                       CPP
   other-extensions:   RankNTypes
   ghc-options:        -Wall -fwarn-orphans -fwarn-tabs -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -fwarn-unrecognised-pragmas
-  ghc-options:        -fno-warn-implicit-prelude -fno-ignore-asserts -fexpose-all-unfoldings -fspecialise-aggressively
+  ghc-options:        -fno-warn-implicit-prelude -fno-ignore-asserts -fexpose-all-unfoldings
