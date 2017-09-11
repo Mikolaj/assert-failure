@@ -76,7 +76,7 @@ infix 2 `twith`
 -- Fixing the first component of the pair to @Text@ prevents warnings
 -- about defaulting, even when @OverloadedStrings@ extension is enabled.
 {-# DEPRECATED twith
-      "consider using 'swith' instead, because GHC optimizes constant Strings better than Texts." #-}
+      "consider using 'swith' instead, for simplicity, because GHC optimizes lazy 'String' constants very well." #-}
 twith :: Text -> b -> (Text, b)
 {-# INLINE twith #-}
 twith t b = (t, b)
