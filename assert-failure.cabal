@@ -14,7 +14,7 @@ homepage:      https://github.com/Mikolaj/assert-failure
 bug-reports:   https://github.com/Mikolaj/assert-failure/issues
 license:       BSD3
 license-file:  LICENSE
-tested-with:   GHC >= 7.4 && <= 8.2
+tested-with:   GHC >= 7.6 && <= 8.2
 data-files:    LICENSE, README.md
 author:        Mikolaj Konarski
 maintainer:    Mikolaj Konarski <mikolaj.konarski@funktory.com>
@@ -29,7 +29,7 @@ source-repository head
 library
   exposed-modules:    Control.Exception.Assert.Sugar
 --  other-modules:
-  build-depends:      base                 >= 4        && < 5,
+  build-depends:      base                 >= 4.6      && < 5,
                       text                 >= 0.11.2.3 && < 2,
                       pretty-show          >= 1.6      && < 2
 
