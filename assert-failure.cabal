@@ -39,4 +39,4 @@ library
   other-extensions:   RankNTypes
   ghc-options:        -Wall -fwarn-orphans -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -fwarn-implicit-prelude -fwarn-identities
 -- TODO:  ghc-options:        -Wall -Wcompat -Worphans -Wincomplete-uni-patterns -Wincomplete-record-updates -Wimplicit-prelude -Wmissing-home-modules -Widentities
-  ghc-options:        -fno-ignore-asserts -fexpose-all-unfoldings
+  ghc-options:        -fno-ignore-asserts
