@@ -17,6 +17,7 @@ module Control.Exception.Assert.Sugar
 import Control.Exception (assert)
 import Data.Text (Text)
 import Debug.Trace (trace)
+import Prelude
 import qualified Text.Show.Pretty as Show.Pretty (ppShow)
 
 infix 1 `blame`
