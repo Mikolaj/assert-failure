@@ -5,7 +5,7 @@ name:          assert-failure
 -- PVP summary:+-+------- breaking API changes
 --             | | +----- non-breaking API additions
 --             | | | +--- code changes with no API change
-version:       0.1.2.2
+version:       0.1.2.3
 synopsis:      Syntactic sugar improving 'assert' and 'error'
 description:   This library contains syntactic sugar that makes it easier
                to write simple contracts with 'assert' and 'error'
@@ -14,7 +14,7 @@ homepage:      https://github.com/Mikolaj/assert-failure
 bug-reports:   https://github.com/Mikolaj/assert-failure/issues
 license:       BSD3
 license-file:  LICENSE
-tested-with:   GHC >= 7.6 && <= 8.2
+tested-with:   GHC >= 7.6 && <= 8.10
 data-files:    LICENSE, README.md
 author:        Mikolaj Konarski
 maintainer:    Mikolaj Konarski <mikolaj.konarski@funktory.com>
