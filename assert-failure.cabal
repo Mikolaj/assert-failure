@@ -37,7 +37,8 @@ library
   default-extensions: MonoLocalBinds, ScopedTypeVariables, OverloadedStrings
                       BangPatterns, RecordWildCards, NamedFieldPuns, MultiWayIf,
                       LambdaCase, DefaultSignatures, InstanceSigs,
-                      PatternSynonyms, StrictData
+                      PatternSynonyms
+-- TODO: , StrictData
   other-extensions:   RankNTypes
   ghc-options:        -Wall -fwarn-orphans -fwarn-incomplete-uni-patterns -fwarn-incomplete-record-updates -fwarn-implicit-prelude -fwarn-identities
 -- TODO:  ghc-options:        -Wall -Wcompat -Worphans -Wincomplete-uni-patterns -Wincomplete-record-updates -Wimplicit-prelude -Wmissing-home-modules -Widentities -Wredundant-constraints -Wmissing-export-lists -Wpartial-fields
