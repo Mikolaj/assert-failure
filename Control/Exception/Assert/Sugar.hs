@@ -27,12 +27,11 @@ infix 1 `blame`
 --
 -- > assert (age < 120 `blame` age) $ savings / (120 - age)
 blame :: Show a => Bool -> a -> Bool
-{-# INLINE blame #-}
+{-# NOINLINE blame #-}
 blame True _ = True
 blame False blamed = trace (blameMessage blamed) False
 
 blameMessage :: Show a => a -> String
-{-# NOINLINE blameMessage #-}
 blameMessage blamed = "Contract failed and the following is to blame:\n  "
                       ++ Show.Pretty.ppShow blamed
 
@@ -68,11 +67,10 @@ swith s v = (s, v)
 --
 -- > assert (allB (<= height) [yf, y1, y2])
 allB :: Show a => (a -> Bool) -> [a] -> Bool
-{-# INLINE allB #-}
+{-# NOINLINE allB #-}
 allB predicate l = blame (all predicate l) $ allBMessage predicate l
 
 allBMessage :: Show a => (a -> Bool) -> [a] -> String
-{-# NOINLINE allBMessage #-}
 allBMessage predicate l = Show.Pretty.ppShow (filter (not . predicate) l)
                           ++ " in the context of "
                           ++ Show.Pretty.ppShow l
@@ -109,7 +107,6 @@ failure asrt blamed =
      $ asrt False
      $ error "Control.Exception.Assert.Sugar.failure"
          -- Lack of no-ignore-asserts or GHC < 7.4.
-
 
 infix 1 `forceEither`
 -- | Assuming that @Left@ signifies an error condition,
