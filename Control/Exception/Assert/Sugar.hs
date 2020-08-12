@@ -11,13 +11,14 @@
 -- no effect at all.
 module Control.Exception.Assert.Sugar
   ( assert, blame, showFailure, swith, allB
-  , failure, twith, forceEither
+    -- * DEPRECATED
+  , twith, failure, forceEither
   ) where
 
-import Control.Exception (assert)
-import Data.Text (Text)
-import Debug.Trace (trace)
-import Prelude
+import           Control.Exception (assert)
+import           Data.Text (Text)
+import           Debug.Trace (trace)
+import           Prelude
 import qualified Text.Show.Pretty as Show.Pretty (ppShow)
 
 infix 1 `blame`
@@ -35,25 +36,6 @@ blameMessage :: Show a => a -> String
 blameMessage blamed = "Contract failed and the following is to blame:\n  "
                       ++ Show.Pretty.ppShow blamed
 
-infix 1 `failure`
--- | Like 'error', but shows the source position (in newer GHCs
--- @error@ shows source position as well, hence deprecation)
--- and also the value to blame for the failure. To be used as in
---
--- > case xs of
--- >   0 : _ -> assert `failure` (xs, "has an insignificant zero")
-{-# DEPRECATED failure
-      "use 'error' and 'showFailure' instead, now that 'error' prints source positions." #-}
-failure :: Show a => (forall x. Bool -> x -> x) -> a -> b
-{-# NOINLINE failure #-}
-failure asrt blamed =
-  let s = "Internal failure occurred and the following is to blame:\n  "
-          ++ Show.Pretty.ppShow blamed
-  in trace s
-     $ asrt False
-     $ error "Control.Exception.Assert.Sugar.failure"
-         -- Lack of no-ignore-asserts or GHC < 7.4.
-
 infix 2 `showFailure`
 -- | A helper function for 'error'. To be used as in
 --
@@ -69,18 +51,6 @@ showFailure s v =
   "Internal failure occurred and the following is to blame:\n  "
   ++ s ++ "\n  "
   ++ Show.Pretty.ppShow v
-
-infix 2 `twith`
--- | Syntactic sugar for the pair operation, to be used for 'blame' as in
---
--- > assert (age < 120 `blame` "age too high" `twith` age) $ savings / (120 - age)
--- Fixing the first component of the pair to @Text@ prevents warnings
--- about defaulting, even when @OverloadedStrings@ extension is enabled.
-{-# DEPRECATED twith
-      "consider using 'swith' instead, for simplicity, because GHC optimizes lazy 'String' constants very well." #-}
-twith :: Text -> b -> (Text, b)
-{-# INLINE twith #-}
-twith t b = (t, b)
 
 infix 2 `swith`
 -- | Syntactic sugar for the pair operation, to be used for 'blame' as in
@@ -106,6 +76,40 @@ allBMessage :: Show a => (a -> Bool) -> [a] -> String
 allBMessage predicate l = Show.Pretty.ppShow (filter (not . predicate) l)
                           ++ " in the context of "
                           ++ Show.Pretty.ppShow l
+
+-- * DEPRECATED
+
+infix 2 `twith`
+-- | Syntactic sugar for the pair operation, to be used for 'blame' as in
+--
+-- > assert (age < 120 `blame` "age too high" `twith` age) $ savings / (120 - age)
+-- Fixing the first component of the pair to @Text@ prevents warnings
+-- about defaulting, even when @OverloadedStrings@ extension is enabled.
+{-# DEPRECATED twith
+      "consider using 'swith' instead, for simplicity, because GHC optimizes lazy 'String' constants very well." #-}
+twith :: Text -> b -> (Text, b)
+{-# INLINE twith #-}
+twith t b = (t, b)
+
+infix 1 `failure`
+-- | Like 'error', but shows the source position (in newer GHCs
+-- @error@ shows source position as well, hence deprecation)
+-- and also the value to blame for the failure. To be used as in
+--
+-- > case xs of
+-- >   0 : _ -> assert `failure` (xs, "has an insignificant zero")
+{-# DEPRECATED failure
+      "use 'error' and 'showFailure' instead, now that 'error' prints source positions." #-}
+failure :: Show a => (forall x. Bool -> x -> x) -> a -> b
+{-# NOINLINE failure #-}
+failure asrt blamed =
+  let s = "Internal failure occurred and the following is to blame:\n  "
+          ++ Show.Pretty.ppShow blamed
+  in trace s
+     $ asrt False
+     $ error "Control.Exception.Assert.Sugar.failure"
+         -- Lack of no-ignore-asserts or GHC < 7.4.
+
 
 infix 1 `forceEither`
 -- | Assuming that @Left@ signifies an error condition,
