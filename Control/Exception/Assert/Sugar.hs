@@ -68,12 +68,16 @@ swith s v = (s, v)
 -- > assert (allB (<= height) [yf, y1, y2])
 allB :: Show a => (a -> Bool) -> [a] -> Bool
 {-# NOINLINE allB #-}
-allB predicate l = blame (all predicate l) $ allBMessage predicate l
+allB predicate l = case all predicate l of
+  True -> True
+  False -> trace (allBMessage predicate l) False
 
 allBMessage :: Show a => (a -> Bool) -> [a] -> String
-allBMessage predicate l = Show.Pretty.ppShow (filter (not . predicate) l)
-                          ++ " in the context of "
-                          ++ Show.Pretty.ppShow l
+allBMessage predicate l =
+  "The following items on the list don't respect the contract:\n"
+  ++ Show.Pretty.ppShow (filter (not . predicate) l)
+  ++ "\nout of all the list items below:\n"
+  ++ Show.Pretty.ppShow l
 
 -- * DEPRECATED
 
