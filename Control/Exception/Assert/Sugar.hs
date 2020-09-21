@@ -26,12 +26,12 @@ infix 1 `blame`
 -- Used as in
 --
 -- > assert (age < 120 `blame` age) $ savings / (120 - age)
-blame :: Show a => Bool -> a -> Bool
+blame :: Show v => Bool -> v -> Bool
 {-# NOINLINE blame #-}
 blame True _ = True
 blame False blamed = trace (blameMessage blamed) False
 
-blameMessage :: Show a => a -> String
+blameMessage :: Show v => v -> String
 blameMessage blamed = "Contract failed and the following is to blame:\n  "
                       ++ Show.Pretty.ppShow blamed
 
@@ -46,10 +46,10 @@ infix 2 `showFailure`
 -- extension is enabled.
 showFailure :: Show v => String -> v -> String
 {-# NOINLINE showFailure #-}
-showFailure s v =
+showFailure s blamed =
   "Internal failure occurred and the following is to blame:\n  "
   ++ s ++ "\n  "
-  ++ Show.Pretty.ppShow v
+  ++ Show.Pretty.ppShow blamed
 
 infix 2 `swith`
 -- | Syntactic sugar for the pair operation, to be used for 'blame' as in
@@ -60,19 +60,19 @@ infix 2 `swith`
 -- about defaulting, even when @OverloadedStrings@ extension is enabled.
 swith :: String -> v -> (String, v)
 {-# INLINE swith #-}
-swith s v = (s, v)
+swith s blamed = (s, blamed)
 
 -- | Like 'List.all', but if the predicate fails, blame all the list elements
 -- and especially those for which it fails. To be used as in
 --
 -- > assert (allB (<= height) [yf, y1, y2])
-allB :: Show a => (a -> Bool) -> [a] -> Bool
+allB :: Show v => (v -> Bool) -> [v] -> Bool
 {-# NOINLINE allB #-}
 allB predicate l = case all predicate l of
   True -> True
   False -> trace (allBMessage predicate l) False
 
-allBMessage :: Show a => (a -> Bool) -> [a] -> String
+allBMessage :: Show v => (v -> Bool) -> [v] -> String
 allBMessage predicate l =
   "The following items on the list don't respect the contract:\n"
   ++ Show.Pretty.ppShow (filter (not . predicate) l)
