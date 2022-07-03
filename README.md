@@ -1,4 +1,4 @@
-assert-failure [![Build Status](https://secure.travis-ci.org/Mikolaj/assert-failure.png)](http://travis-ci.org/Mikolaj/assert-failure) [![Hackage](https://img.shields.io/hackage/v/assert-failure.svg)](https://hackage.haskell.org/package/assert-failure)
+assert-failure [![Hackage](https://img.shields.io/hackage/v/assert-failure.svg)](https://hackage.haskell.org/package/assert-failure)
 ==============
 
 This library contains syntactic sugar that makes it easier
