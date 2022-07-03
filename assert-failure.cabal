@@ -29,9 +29,9 @@ source-repository head
 library
   exposed-modules:    Control.Exception.Assert.Sugar
 --  other-modules:
-  build-depends:      base                 >= 4.6      && < 5,
-                      text                 >= 0.11.2.3 && < 2,
-                      pretty-show          >= 1.6      && < 2
+  build-depends:      base                 >= 4.6 && < 99,
+                      text                 >= 0.11.2.3,
+                      pretty-show          >= 1.6
 
   default-language:   Haskell2010
   default-extensions: MonoLocalBinds, ScopedTypeVariables, OverloadedStrings
