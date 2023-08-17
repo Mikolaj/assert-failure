@@ -27,7 +27,7 @@ infix 1 `blame`
 --
 -- > assert (age < 120 `blame` age) $ savings / (120 - age)
 blame :: Show v => Bool -> v -> Bool
-{-# NOINLINE blame #-}
+{-# INLINABLE blame #-}
 blame True _ = True
 blame False blamed = trace (blameMessage blamed) False
 
@@ -45,7 +45,7 @@ infix 2 `showFailure`
 -- prevents warnings about defaulting, even when @OverloadedStrings@
 -- extension is enabled.
 showFailure :: Show v => String -> v -> String
-{-# NOINLINE showFailure #-}
+{-# INLINABLE showFailure #-}
 showFailure s blamed =
   "Internal failure occurred and the following is to blame:\n  "
   ++ s ++ "\n  "
@@ -67,12 +67,13 @@ swith s blamed = (s, blamed)
 --
 -- > assert (allB (<= height) [yf, y1, y2])
 allB :: Show v => (v -> Bool) -> [v] -> Bool
-{-# NOINLINE allB #-}
+{-# INLINABLE allB #-}
 allB predicate l = case all predicate l of
   True -> True
   False -> trace (allBMessage predicate l) False
 
 allBMessage :: Show v => (v -> Bool) -> [v] -> String
+{-# INLINABLE allBMessage #-}
 allBMessage predicate l =
   "The following items on the list don't respect the contract:\n"
   ++ Show.Pretty.ppShow (filter (not . predicate) l)
